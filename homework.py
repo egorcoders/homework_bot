@@ -53,18 +53,18 @@ class ResponseFormatError(Exception):
 
 
 CONNECTION_ERROR = '{error}, {url}, {headers}, {params}'
-SERVICE_REJECTION = '{code},'
+SERVICE_REJECTION = '{code}'
 WRONG_ENDPOINT = '{response_status}, {url}, {headers}, {params}'
-WRONG_HOMEWORK_STATUS = '{}'
-WRONG_DATA_TYPE = 'Неверный тип данных {type}, вместо "dict".'
-HOMEWORK_STATUS = '{}'
+WRONG_HOMEWORK_STATUS = '{homework_status}'
+WRONG_DATA_TYPE = 'Неверный тип данных {type}, вместо "dict"'
 STATUS_IS_CHANGED = '{verdict}, {homework}'
-STATUS_IS_NOT_CHANGED = 'Статус не изменился, нет записей.'
+STATUS_IS_NOT_CHANGED = 'Статус не изменился, нет записей'
 FAILURE_TO_SEND_MESSAGE = '{error}, {message}'
 GLOBAL_VARIABLE_IS_MISSING = 'Отсутствует глобальная переменная'
 GLOBAL_VARIABLE_IS_EMPTY = 'Пустая глобальная переменная'
-MESSAGE_IS_SENT = 'Сообщение {} отправлено'
-FORMAT_NOT_JSON = 'Формат не json {}'
+MESSAGE_IS_SENT = 'Сообщение {message} отправлено'
+FORMAT_NOT_JSON = 'Формат не json {error}'
+LIST_IS_EMPTY = 'Список пустой'
 
 PRACTICUM_TOKEN = os.getenv('PRACTICUM_TOKEN')
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
@@ -77,7 +77,7 @@ HEADERS = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
 HOMEWORK_STATUSES = {
     'approved': 'Работа проверена: ревьюеру всё понравилось. Ура!',
     'reviewing': 'Работа взята на проверку ревьюером.',
-    'rejected': 'Работа проверена: у ревьюера есть замечания.'
+    'rejected': 'Работа проверена: у ревьюера есть замечания.',
 }
 
 
@@ -90,7 +90,7 @@ def send_message(bot, message):
             error=error,
             message=message,
         ))
-    logging.info(f'Message \'{message}\' is sent')
+    logging.info(f'Message "{message}" is sent')
 
 
 def get_api_answer(current_timestamp):
@@ -126,7 +126,11 @@ def check_response(response):
         raise ServiceError(SERVICE_REJECTION.format(
             code=response.get('code'),
         ))
-    return response['homeworks'][0]
+    if response['homeworks']:
+        return response['homeworks'][0]
+    else:
+        raise IndexError(LIST_IS_EMPTY)
+
 
 
 def parse_status(homework):
@@ -171,11 +175,10 @@ def main():
             send_message(bot, message)
             logging.info(homework)
             current_timestamp = response.get('current_date')
-
         except IndexError:
             message = 'Статус работы не изменился'
             send_message(bot, message)
-            logging.info('Статус работы не изменился')
+            logging.info(message)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
             send_message(bot, message)
