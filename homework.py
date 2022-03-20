@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 import time
@@ -14,6 +13,7 @@ load_dotenv()
 class ServiceError(Exception):
     """Ошибка отсутствия доступа по заданному эндпойнту."""
     pass
+
 
 class NetworkError(Exception):
     """Ошибка отсутствия сети."""
@@ -38,6 +38,7 @@ class GlobalsError(Exception):
 class DataTypeError(Exception):
     """Ошибка, если тип данных не dict."""
     pass
+
 
 class ResponseFormatError(Exception):
     """Ошибка, если формат response не json."""
