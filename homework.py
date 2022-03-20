@@ -11,31 +11,27 @@ load_dotenv()
 
 
 class ServiceError(Exception):
-    pass
+    """Ошибка отсутствия доступа по заданному эндпойнту."""
 
 
-class ConnectingError(Exception):
-    pass
+class NetworkError(Exception):
+    """Ошибка отсутствия сети."""
 
 
 class EndpointError(Exception):
-    pass
+    """Ошибка, если эндпойнт не корректен."""
 
 
 class MessageSendingError(Exception):
-    pass
+    """Ошибка отправки сообщения."""
 
 
 class GlobalsError(Exception):
-    pass
+    """Ошибка, если есть пустые глобальные переменные."""
 
 
-class GlobalIsNullError(Exception):
-    pass
-
-
-class HomeworkTypeError(Exception):
-    pass
+class DataTypeError(Exception):
+    """Ошибка, если тип данных не dict."""
 
 
 CONNECTION_ERROR = '{error}, {url}, {headers}, {params}'
@@ -68,7 +64,7 @@ HOMEWORK_STATUSES = {
 
 
 def send_message(bot, message):
-    '''Отправляет сообщение пользователю в Телегу.'''
+    """Отправляет сообщение пользователю в Телегу."""
     try:
         bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
     except Exception as error:
@@ -81,7 +77,7 @@ def send_message(bot, message):
 
 
 def get_api_answer(current_timestamp):
-    '''Делает запрос к единственному эндпоинту API-сервиса.'''
+    """Делает запрос к единственному эндпоинту API-сервиса."""
     timestamp = current_timestamp or int(time.time())
     params = {'from_date': timestamp}
     headers = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
@@ -103,10 +99,10 @@ def get_api_answer(current_timestamp):
 
 
 def check_response(response):
-    '''
-    Возвращает домашку, если есть,
-    а так же проверяет валидность её статуса.
-    '''
+    """
+    Возвращает домашку, если есть.
+    Проверяет валидность её статуса.
+    """
     try:
         return response['homeworks'][0]
     except 'code' in response:
@@ -116,10 +112,10 @@ def check_response(response):
 
 
 def parse_status(homework):
-    '''Возвращает текст сообщения от ревьюера.'''
+    """Возвращает текст сообщения от ревьюера."""
     data_type = type(homework)
     if data_type != dict:
-        raise HomeworkTypeError(WRONG_DATA_TYPE.format(data_type))
+        raise DataTypeError(WRONG_DATA_TYPE.format(data_type))
     homework_name = homework.get('homework_name')
     homework_status = homework.get('status')
 
@@ -132,7 +128,7 @@ def parse_status(homework):
 
 
 def check_tokens():
-    '''Проверяет доступность переменных окружения.'''
+    """Проверяет доступность переменных окружения."""
     for key in (
         'PRACTICUM_TOKEN',
         'TELEGRAM_TOKEN',
@@ -150,7 +146,6 @@ def check_tokens():
 
 def main():
     """Основная логика работы бота."""
-
     if not check_tokens():
         raise GlobalsError('Ошибка глобальной переменной. Смотрите логи.')
     check_tokens()
