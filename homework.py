@@ -132,7 +132,6 @@ def check_response(response):
         raise IndexError(LIST_IS_EMPTY)
 
 
-
 def parse_status(homework):
     """Возвращает текст сообщения от ревьюера."""
     if not isinstance(homework, dict):
