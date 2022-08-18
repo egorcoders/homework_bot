@@ -29,65 +29,65 @@
 
 ## Установка
 
-Клонировать репозиторий:
+1. Клонировать репозиторий:
 
-```python
-git clone https://github.com/egorcoders/homework_bot.git
-```
+    ```python
+    git clone https://github.com/egorcoders/homework_bot.git
+    ```
 
-Перейти в папку с проектом:
+2. Перейти в папку с проектом:
 
-```python
-cd homework_bot/
-```
+    ```python
+    cd homework_bot/
+    ```
 
-Установить виртуальное окружение для проекта:
+3. Установить виртуальное окружение для проекта:
 
-```python
-python -m venv venv
-```
+    ```python
+    python -m venv venv
+    ```
 
-Активировать виртуальное окружение для проекта:
+4. Активировать виртуальное окружение для проекта:
 
-```python
-# для OS Lunix и MacOS
-source venv/bin/activate
+    ```python
+    # для OS Lunix и MacOS
+    source venv/bin/activate
 
-# для OS Windows
-source venv/Scripts/activate
-```
+    # для OS Windows
+    source venv/Scripts/activate
+    ```
 
-Установить зависимости:
+5. Установить зависимости:
 
-```python
-python3 -m pip install --upgrade pip
-pip install -r requirements.txt
-```
+    ```python
+    python3 -m pip install --upgrade pip
+    pip install -r requirements.txt
+    ```
 
-Выполнить миграции на уровне проекта:
+6. Выполнить миграции на уровне проекта:
 
-```python
-cd yatube
-python3 manage.py makemigrations
-python3 manage.py migrate
-```
+    ```python
+    cd yatube
+    python3 manage.py makemigrations
+    python3 manage.py migrate
+    ```
 
-Зарегистрировать чат-бота в Телеграм
+7. Зарегистрировать чат-бота в Телеграм
 
-Создать в корневой директории файл .env для хранения переменных окружения
+8. Создать в корневой директории файл .env для хранения переменных окружения
 
-```python
-PRAKTIKUM_TOKEN = 'xxx'
-TELEGRAM_TOKEN = 'xxx'
-TELEGRAM_CHAT_ID = 'xxx'
-```
+    ```python
+    PRAKTIKUM_TOKEN = 'xxx'
+    TELEGRAM_TOKEN = 'xxx'
+    TELEGRAM_CHAT_ID = 'xxx'
+    ```
 
-Запустить проект локально:
+9. Запустить проект локально:
 
-```python
-# для OS Lunix и MacOS
-python homework_bot.py
+    ```python
+    # для OS Lunix и MacOS
+    python homework_bot.py
 
-# для OS Windows
-python3 homework_bot.py
-```
+    # для OS Windows
+    python3 homework_bot.py
+    ```
